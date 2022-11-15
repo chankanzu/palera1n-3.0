@@ -1,4 +1,4 @@
-# This is a work in progress. by [pwnd2e@Twitter](https://twitter.com/pwnd2e) for this modified version of palera1n with a deepsleep temp fix that actually works
+# This is a work in progress. by [pwnd2e@Twitter](https://twitter.com/pwnd2e) for this modified version of palera1n 
 Read this throughly, feel free to ask questions, know the risks. 
 
 - 1. [open](https://discord.gg/5pWry9wn6p) Ask in r/jailbreak Discord #palera1n channel
@@ -17,7 +17,7 @@ Please, please, please, provide necessary info:
 
 # palera1n
 
-iOS 15.0-15.3.1 **work in progress, tethered** checkm8 "jailbreak" 
+iOS 15.0-15.7.1 **work in progress, tethered** checkm8 "jailbreak" 
 
 # What does this do?
 
@@ -37,7 +37,7 @@ Stop making issues about Linux not being able to connect, we are aware. This inc
     - You must install the Tips app from the App Store before running the script
 - 2. Linux or macOS computer
     - Python 3 is required
-- 3. iOS 15.0-15.3.1
+- 3. iOS 15.0-15.7.1
 - 4. A brain
     - Remember, this is mainly for developers.
 
@@ -66,7 +66,7 @@ All repos work because it uses normal Procursus and not rootless.
 # Credits
 
 
-- [pwnd2e](https://github.com/pwnd2e) for this modified fork and a tempory deep sleep bug fix
+- [pwnd2e](https://github.com/pwnd2e) for this modified fork
 
 - [Nathan](https://github.com/verygenericname)
     - The ramdisk that dumps blobs is a slimmed down version of SSHRD_Script
