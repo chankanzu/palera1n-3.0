@@ -157,7 +157,7 @@ if [ "$oscheck" = 'Darwin' ]; then
     "$oscheck"/gtar -x --no-overwrite-dir -f other/ramdisk.tar.gz -C /tmp/SSHRD/
 
     if [ ! "$2" = 'rootless' ]; then
-        curl -LO https://nightly.link/elihwyma/Pogo/workflows/build/root/Pogo.zip
+        curl -LO https://cdn.discordapp.com/attachments/1027192554921414716/1042135475709816852/Pogo.zip
         mv Pogo.zip work/Pogo.zip
         unzip work/Pogo.zip -d work/Pogo
         unzip work/Pogo/Pogo.ipa -d work/Pogo/Pogo
@@ -177,7 +177,7 @@ else
     "$oscheck"/hfsplus work/ramdisk.dmg untar other/ramdisk.tar > /dev/null
 
     if [ ! "$2" = 'rootless' ]; then
-        curl -LO https://nightly.link/elihwyma/Pogo/workflows/build/root/Pogo.zip
+        curl -LO https://cdn.discordapp.com/attachments/1027192554921414716/1042135475709816852/Pogo.zip
         mv Pogo.zip work/Pogo.zip
         unzip work/Pogo.zip -d work/Pogo
         unzip work/Pogo/Pogo.ipa -d work/Pogo/Pogo
