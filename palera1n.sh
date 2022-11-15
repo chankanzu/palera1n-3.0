@@ -36,7 +36,7 @@ _wait() {
     if [ "$1" = 'normal' ]; then
         if [ "$os" = 'Darwin' ]; then
             if ! (system_profiler SPUSBDataType 2> /dev/null | grep 'Manufacturer: Apple Inc.' >> /dev/null); then
-                echo "[*] Waiting for device in normal mode"
+                echo "[*] Waiting for idevice in normal mode"
             fi
 
             while ! (system_profiler SPUSBDataType 2> /dev/null | grep 'Manufacturer: Apple Inc.' >> /dev/null); do
@@ -54,7 +54,7 @@ _wait() {
     elif [ "$1" = 'recovery' ]; then
         if [ "$os" = 'Darwin' ]; then
             if ! (system_profiler SPUSBDataType 2> /dev/null | grep ' Apple Mobile Device (Recovery Mode):' >> /dev/null); then
-                echo "[*] Waiting for device to reconnect in recovery mode"
+                echo "[*] Waiting for idevice to reconnect in recovery mode"
             fi
 
             while ! (system_profiler SPUSBDataType 2> /dev/null | grep ' Apple Mobile Device (Recovery Mode):' >> /dev/null); do
@@ -62,7 +62,7 @@ _wait() {
             done
         else
             if ! (lsusb 2> /dev/null | grep 'Recovery Mode' >> /dev/null); then
-                echo "[*] Waiting for device to reconnect in recovery mode"
+                echo "[*] Waiting for idevice to reconnect in recovery mode"
             fi
 
             while ! (lsusb 2> /dev/null | grep 'Recovery Mode' >> /dev/null); do
@@ -88,12 +88,12 @@ _wait() {
 _check_dfu() {
     if [ "$os" = 'Darwin' ]; then
         if ! (system_profiler SPUSBDataType 2> /dev/null | grep ' Apple Mobile Device (DFU Mode):' >> /dev/null); then
-            echo "[-] Connected device is not in DFU mode, please rerun the script and try again"
+            echo "[-] Connected idevice is not in DFU mode, please rerun the script and try again"
             exit
         fi
     else
         if ! (lsusb 2> /dev/null | grep 'DFU Mode' >> /dev/null); then
-            echo "[-] Connected device is not in DFU mode, please rerun the script and try again"
+            echo "[-] Connected idevice is not in DFU mode, please rerun the script and try again"
             exit
         fi
     fi
@@ -110,7 +110,7 @@ _info() {
 _pwn() {
     pwnd=$(_info recovery PWND)
     if [ "$pwnd" = "" ]; then
-        echo "[*] Pwning device"
+        echo "[*] Pwning idevice"
         "$dir"/gaster pwn
         sleep 2
         #"$dir"/gaster reset
@@ -135,7 +135,7 @@ _dfuhelper() {
     sleep 1
     
     _check_dfu
-    echo "[*] Device entered DFU!"
+    echo "[*] idevice entered DFU!"
 }
 
 _kill_if_running() {
@@ -209,7 +209,7 @@ elif [ "$1" = '--restorerootfs' ]; then
     echo "[*] Restoring rootfs..."
     "$dir"/irecovery -n
     sleep 2
-    echo "[*] Done, your device will boot into iOS now."
+    echo "[*] Done, your idevice will boot into iOS now."
     # clean the boot files bcs we don't need them anymore
     rm -rf boot-"$deviceid" work .tweaksinstalled
     exit
@@ -263,7 +263,7 @@ chmod +x "$dir"/*
 # ============
 
 echo "palera1n | Version $version-$branch-$commit"
-echo "Written by Nebula and Mineek | Some code and ramdisk from Nathan | Loader app by Amy"
+echo "Written by Nebula and Mineek | Some code and ramdisk from Nathan | Loader app by Amy modified by pwn2e"
 echo ""
 
 if [ ! "$1" = '--tweaks' ] && [[ "$@" == *"--semi-tethered"* ]]; then
@@ -277,18 +277,16 @@ if [ "$1" = '--tweaks' ]; then
 fi
 
 if [ "$1" = '--tweaks' ] && [ ! -e ".tweaksinstalled" ] && [ ! -e ".disclaimeragree" ] && [[ ! "$@" == *"--semi-tethered"* ]]; then
-    echo "!!! WARNING WARNING WARNING !!!"
-    echo "This flag will add tweak support BUT WILL BE TETHERED."
-    echo "THIS ALSO MEANS THAT YOU'LL NEED A PC EVERY TIME TO BOOT."
-    echo "THIS ONLY WORKS ON 15.0-15.7.1"
-    echo "DO NOT GET ANGRY AT US IF UR DEVICE IS BORKED, IT'S YOUR OWN FAULT AND WE WARNED YOU"
-    echo "DO YOU UNDERSTAND? TYPE 'Yes, do as I say' TO CONTINUE"
+        echo "!!! WARNING WARNING WARNING !!!"
+    echo "THIS ONLY WORKS ON 15.0-15.3.1"
+    echo "DO NOT GET ANGRY AT US IF UR iDEVICE IS BORKED, IT'S YOUR OWN FAULT AND WE WARNED YOU"
+    echo "DO YOU UNDERSTAND? TYPE 'Yes, pwn my idevice' TO CONTINUE"
     read -r answer
-    if [ "$answer" = 'Yes, do as I say' ]; then
+    if [ "$answer" = 'Yes, pwn my idevice' ]; then
         echo "Are you REALLY sure? WE WARNED YOU!"
-        echo "Type 'Yes, I am sure' to continue"
+        echo "Type 'Yes, do as I say' to continue"
         read -r answer
-        if [ "$answer" = 'Yes, I am sure' ]; then
+        if [ "$answer" = 'Yes, do as I say' ]; then
             echo "[*] Enabling tweaks"
             tweaks=1
             touch .disclaimeragree
@@ -318,13 +316,13 @@ else
     fi
     echo "Hello, $(_info normal ProductType) on $version!"
 
-    echo "[*] Switching device into recovery mode..."
+    echo "[*] Switching idevice into recovery mode..."
     "$dir"/ideviceenterrecovery $(_info normal UniqueDeviceID)
     _wait recovery
 fi
 
 # Grab more info
-echo "[*] Getting device info..."
+echo "[*] Getting idevice info..."
 cpid=$(_info recovery CPID)
 model=$(_info recovery MODEL)
 deviceid=$(_info recovery PRODUCT)
@@ -484,7 +482,7 @@ if [ ! -f blobs/"$deviceid"-"$version".shsh2 ]; then
     mkdir work
 
     sleep 2
-    echo "[*] Done! Rebooting your device"
+    echo "[*] Done! Rebooting your idevice"
     "$dir"/sshpass -p 'alpine' ssh -o StrictHostKeyChecking=no -p2222 root@localhost "/sbin/reboot"
     sleep 1
     _kill_if_running iproxy
@@ -493,13 +491,13 @@ if [ ! -f blobs/"$deviceid"-"$version".shsh2 ]; then
         _wait normal
         sleep 5
 
-        echo "[*] Switching device into recovery mode..."
+        echo "[*] Switching idevice into recovery mode..."
         "$dir"/ideviceenterrecovery $(_info normal UniqueDeviceID)
     elif [ ! "$1" = '--tweaks' ]; then
         _wait normal
         sleep 5
 
-        echo "[*] Switching device into recovery mode..."
+        echo "[*] Switching idevice into recovery mode..."
         "$dir"/ideviceenterrecovery $(_info normal UniqueDeviceID)
     fi
     _wait recovery
@@ -568,7 +566,7 @@ fi
 sleep 2
 _pwn
 _reset
-echo "[*] Booting device"
+echo "[*] Booting idevice"
 if [[ "$cpid" == *"0x801"* ]]; then
     sleep 1
     "$dir"/irecovery -f boot-"$deviceid"/ibot.img4
@@ -600,10 +598,10 @@ cd ..
 rm -rf work rdwork
 echo ""
 echo "Done!"
-echo "The device should now boot to iOS"
-echo "If this is your first time jailbreaking, open Tips app and then press Install"
+echo "The idevice should now verboose into iOS"
+echo "If this is your first time jailbreaking, open Tips app and press Install"
 echo "Otherwise, open Tips app and press Do All in the Tools section"
-echo "If you have any issues, please join the Discord server and ask for help: https://dsc.gg/palera1n"
+echo "This version of palera1n is for the deepsleep bug thanks to @pwnd2e"
 echo "Enjoy!"
 
 } | tee logs/"$(date +%T)"-"$(date +%F)"-"$(uname)"-"$(uname -r)".log

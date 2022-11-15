@@ -25,7 +25,7 @@ chmod +x "$oscheck"/*
 
 if [ "$oscheck" = 'Darwin' ]; then
     if ! (system_profiler SPUSBDataType 2> /dev/null | grep ' Apple Mobile Device (DFU Mode)' >> /dev/null); then
-        echo "[*] Waiting for device in DFU mode"
+        echo "[*] Waiting for idevice in DFU mode"
     fi
     
     while ! (system_profiler SPUSBDataType 2> /dev/null | grep ' Apple Mobile Device (DFU Mode)' >> /dev/null); do
@@ -92,7 +92,7 @@ if [ "$1" = 'boot' ]; then
     sleep 1
     "$oscheck"/irecovery -c bootx
 
-    echo "[*] Device should now show text on screen"
+    echo "[*] idevice should boot soon please waite"
     exit
 fi
 
