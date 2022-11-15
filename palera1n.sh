@@ -278,7 +278,7 @@ fi
 
 if [ "$1" = '--tweaks' ] && [ ! -e ".tweaksinstalled" ] && [ ! -e ".disclaimeragree" ] && [[ ! "$@" == *"--semi-tethered"* ]]; then
         echo "!!! WARNING WARNING WARNING !!!"
-    echo "THIS ONLY WORKS ON 15.0-15.3.1"
+    echo "THIS ONLY WORKS ON 15.0-15.7.1"
     echo "DO NOT GET ANGRY AT US IF UR iDEVICE IS BORKED, IT'S YOUR OWN FAULT AND WE WARNED YOU"
     echo "DO YOU UNDERSTAND? TYPE 'Yes, pwn my idevice' TO CONTINUE"
     read -r answer
