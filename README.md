@@ -1,78 +1,73 @@
-<h1 align="center">
-    <img src="https://avatars.githubusercontent.com/u/114239186?s=100&v=4" alt="palera1n logo">
-    <p>palera1n</p>
-</h1>
-<h3 align="center">An iOS 15.0-15.7.1 work-in-progress, (semi-)tethered checkm8 jailbreak.</h3>
-<p align="center">
-    <strong><a href="CHANGELOG.md">Change Log</a></strong>
-    •
-    <strong><a href="https://dsc.gg/palera1n">Discord</a></strong>
-    •
-    <strong><a href="https://twitter.com/palera1n">Twitter</a></strong>
-</p>
+# This is a work in progress. by [pwnd2e@Twitter](https://twitter.com/pwnd2e) for this modified version of palera1n with a deepsleep temp fix that actually works
+Read this throughly, feel free to ask questions, know the risks. 
 
-# How does it work?
-It boots the device with multiple patches required. On first run, it'll boot a ramdisk which dumps your onboard blob, creates a fakefs (if using semi tethered), installs the loader app, and patches your kernel.
-
-# Issues
-### Need help?
-If you need help, **please** join our Discord. We disabled issues due to the flood of spam, and difficulty to respond in general. We are much more comfortable on Discord.
+- 1. [open](https://discord.gg/5pWry9wn6p) Ask in r/jailbreak Discord #palera1n channel
+- 2. [open](https://discord.gg/4S3yUMxuQH) Ask in palera1n Discord
+- 3. [open](https://discord.gg/kKJmDDaZrB) Ask in 2escustomservices Discord #palera1n channel
+- 4. Or open a GitHub issue
 
 Please, please, please, provide necessary info:
 
 - iOS version and device (eg. iPhone 7+ 15.1, iPhone 6s 15.3.1)
-- Computer's OS and version (eg. Ubuntu 22.04, macOS 13.0)
+- Computer's OS and version (eg. Ubuntu 22.04, macOS 12.0 and up)
 - The command you ran
-- **Full log from the logs folder**
+- Debug logs with `--debug`
 
-**DO NOT** harass tweak devs if tweaks don't work. Refer to [here](https://github.com/itsnebulalol/ios15-tweaks) for compatiblity.
 
-You may join [here](https://dsc.gg/palera1n).
 
-### Linux
-- Linux has some weird usbmuxd issues. We have tried our best to fix them, but there still are issues. We highly recommend to compile and install usbmuxd2.
-- Stop making issues about Linux not being able to connect, we are aware. This includes being stuck on waiting for ramdisk to finish booting.
+# palera1n
 
-### Warning
-- We are **NOT** responsible for any data loss. The user of this program accepts responsibility should something happen to their device. While nothing should happen, jailbreaking has risks in itself. **If your device is stuck in recovery, please run one of the following:**
-   - futurerestore --exit-recovery
-   - irecovery -n
+iOS 15.0-15.3.1 **work in progress, tethered** checkm8 "jailbreak" 
 
-### A10 and A11 devices
-- On A10 and A11, **you must disable your passcode while in the jailbroken state**.
-  - On A10, this can be fixed in the future by implementing blackbird.
-  - On A11, we don't have a SEP exploit yet.
+# What does this do?
+
+It boots the device with AMFI patches. On first run, it'll boot a ramdisk which dumps your onboard blob, and installs Sileo and Substitute.
+
+**WARNING 1**: I am NOT responsible for any data loss. The user of this program accepts responsibility should something happen to their device. While nothing should happen, jailbreaking has risks in itself. If your device is stuck in recovery, please run `futurerestore --exit-recovery`, or use `irecovery -n`. Using this on iOS 16 has a higher chance of bootlooping you.
+
+On A10 and A11, you **must disable your passcode while in the jailbroken state**. On A10, this can be fixed in the future by implementing blackbird. On A11, we don't have a SEP exploit yet.
+
+# Linux issues
+Linux has some weird usbmuxd issues. We have tried our best to fix them, but there stil are issues. We highly recommend to compile and install [usbmuxd2](https://github.com/tihmstar/usbmuxd2).
+
+Stop making issues about Linux not being able to connect, we are aware. This includes being stuck on waiting for ramdisk to finish booting.
 
 # Prerequisites
-#### Warning: You must install the Tips app from the App Store before running palera1n.
-- A checkm8 vulnerable iOS device on iOS 15 (A8-A11)
-  - The device must be on iOS 15.0-15.7.1
-- Linux or macOS computer
-  - Python 3 must be installed.
+- 1. checkm8 vulnerable iOS device on iOS 15 (A8X-A11)
+    - You must install the Tips app from the App Store before running the script
+- 2. Linux or macOS computer
+    - Python 3 is required
+- 3. iOS 15.0-15.3.1
+- 4. A brain
+    - Remember, this is mainly for developers.
 
-# How to use?
-A better tutorial can be found [here](https://ios.cfw.guide/installing-palera1n).
+# How to use
+- 1. Clone this repo with `git clone --recursive https://github.com/pwnd2e/palera1n && cd palera1n`
+    - \[A10+\] Before running, you **must** disable your passcode
+    - Put your device in DFU Mode before running.
+- 2. Run `./palera1n.sh --tweaks <ios version youre on atm>`   
+    - having trouble with dfu booting in the middle of the procces,
+     start over and use   `./palera1n.sh --dfuhelper` 
+when it starts ramdisk exit out of terminal and cd back into palera1n and start from 2 again.
+    - You will be prompt do you unerstand type  `Yes, pwn my idevice`  
+    - then it will ask you again type `Yes, do as I say`
+- 3. Follow the steps
 
-1. Clone this repo with `git clone --recursive https://github.com/palera1n/palera1n && cd palera1n`
-2. Run `./palera1n.sh --tweaks <your current iOS version>` (run with `sudo` if you're on linux)
-   - [A10 and A11] Before running, **you must disable your passcode**.
-   - Put your device in DFU mode before running.
-3. Follow the steps on your screen.
+
+
+
+
+
 
 # Repos
-
-### Tweaks mode
-All repos work when using tweaks mode because it uses normal Procursus and not rootless.
-
-### Rootless 
-Repos need to be updated for rootless, here are some that work currently:
-
-- [Mineek's repo](https://mineek.github.io/repo) contains rootless Procursus packages
-- The official [palera1n repo](https://repo.palera.in) contains miscellaneous packages
-
-If you want to make a rootless repo, use the official [palera1n repo](https://github.com/palera1n/repo) for reference. Every deb should use the `iphoneos-arm64` architecture, and *nothing* should be on the rootfs. Everything should be in /var/jb.
+All repos work because it uses normal Procursus and not rootless.
+- [pwnd2e](https://www.2escustomservices.com/iOS15) You can add this repo for tweaks that wont bork your idevice
 
 # Credits
+
+
+- [pwnd2e](https://github.com/pwnd2e) for this modified fork and a tempory deep sleep bug fix
+
 - [Nathan](https://github.com/verygenericname)
     - The ramdisk that dumps blobs is a slimmed down version of SSHRD_Script
     - Also helped Mineek getting the kernel up and running and with the patches
@@ -81,11 +76,11 @@ If you want to make a rootless repo, use the official [palera1n repo](https://gi
     - For the patching and booting commands
     - Adding tweak support
 - [Amy](https://github.com/elihwyma) for the Pogo app
-- [checkra1n](https://github.com/checkra1n) for the base of the kpf
 - [nyuszika7h](https://github.com/nyuszika7h) for the script to help get into DFU
 - [the Procursus Team](https://github.com/ProcursusTeam) for the amazing bootstrap
 - [F121](https://github.com/F121Live) for helping test
-- [m1sta](https://github.com/m1stadev) for pyimg4
 - [tihmstar](https://github.com/tihmstar) for pzb/original iBoot64Patcher/img4tool
 - [xerub](https://github.com/xerub) for img4lib and restored_external in the ramdisk
 - [Cryptic](https://github.com/Cryptiiiic) for iBoot64Patcher fork
+
+
