@@ -15,7 +15,7 @@ echo "[*] Command ran:`if [ $EUID = 0 ]; then echo " sudo"; fi` ./palera1n.sh $@
 # Variables
 # =========
 ipsw="" # IF YOU WERE TOLD TO PUT A CUSTOM IPSW URL, PUT IT HERE. YOU CAN FIND THEM ON https://appledb.dev
-version="3.0"
+version="1.3.0"
 os=$(uname)
 dir="$(pwd)/binaries/$os"
 commit=$(git rev-parse --short HEAD)
@@ -36,7 +36,7 @@ _wait() {
     if [ "$1" = 'normal' ]; then
         if [ "$os" = 'Darwin' ]; then
             if ! (system_profiler SPUSBDataType 2> /dev/null | grep 'Manufacturer: Apple Inc.' >> /dev/null); then
-                echo "[*] Waiting for idevice in normal mode"
+                echo "[*] Waiting for device in normal mode"
             fi
 
             while ! (system_profiler SPUSBDataType 2> /dev/null | grep 'Manufacturer: Apple Inc.' >> /dev/null); do
@@ -44,7 +44,7 @@ _wait() {
             done
         else
             if ! (lsusb 2> /dev/null | grep ' Apple, Inc.' >> /dev/null); then
-                echo "[*] Waiting for idevice in normal mode"
+                echo "[*] Waiting for device in normal mode"
             fi
 
             while ! (lsusb 2> /dev/null | grep ' Apple, Inc.' >> /dev/null); do
@@ -54,7 +54,7 @@ _wait() {
     elif [ "$1" = 'recovery' ]; then
         if [ "$os" = 'Darwin' ]; then
             if ! (system_profiler SPUSBDataType 2> /dev/null | grep ' Apple Mobile Device (Recovery Mode):' >> /dev/null); then
-                echo "[*] Waiting for idevice to reconnect in recovery mode"
+                echo "[*] Waiting for device to reconnect in recovery mode"
             fi
 
             while ! (system_profiler SPUSBDataType 2> /dev/null | grep ' Apple Mobile Device (Recovery Mode):' >> /dev/null); do
@@ -62,7 +62,7 @@ _wait() {
             done
         else
             if ! (lsusb 2> /dev/null | grep 'Recovery Mode' >> /dev/null); then
-                echo "[*] Waiting for idevice to reconnect in recovery mode"
+                echo "[*] Waiting for device to reconnect in recovery mode"
             fi
 
             while ! (lsusb 2> /dev/null | grep 'Recovery Mode' >> /dev/null); do
@@ -110,7 +110,7 @@ _info() {
 _pwn() {
     pwnd=$(_info recovery PWND)
     if [ "$pwnd" = "" ]; then
-        echo "[*] Pwning idevice"
+        echo "[*] Pwning device"
         "$dir"/gaster pwn
         sleep 2
         #"$dir"/gaster reset
@@ -135,7 +135,7 @@ _dfuhelper() {
     sleep 1
     
     _check_dfu
-    echo "[*] idevice entered DFU!"
+    echo "[*] Device entered DFU!"
 }
 
 _kill_if_running() {
@@ -209,7 +209,7 @@ elif [ "$1" = '--restorerootfs' ]; then
     echo "[*] Restoring rootfs..."
     "$dir"/irecovery -n
     sleep 2
-    echo "[*] Done, your idevice will boot into iOS now."
+    echo "[*] Done, your device will boot into iOS now."
     # clean the boot files bcs we don't need them anymore
     rm -rf boot-"$deviceid" work .tweaksinstalled
     exit
@@ -278,15 +278,17 @@ fi
 
 if [ "$1" = '--tweaks' ] && [ ! -e ".tweaksinstalled" ] && [ ! -e ".disclaimeragree" ] && [[ ! "$@" == *"--semi-tethered"* ]]; then
     echo "!!! WARNING WARNING WARNING !!!"
+    echo "This flag will add tweak support BUT WILL BE TETHERED."
+    echo "THIS ALSO MEANS THAT YOU'LL NEED A PC EVERY TIME TO BOOT."
     echo "THIS ONLY WORKS ON 15.0-15.7.1"
-    echo "DO NOT GET ANGRY AT US IF UR iDEVICE IS BORKED, IT'S YOUR OWN FAULT AND WE WARNED YOU"
-    echo "DO YOU UNDERSTAND? TYPE 'Yes, pwn my idevice' TO CONTINUE"
+    echo "DO NOT GET ANGRY AT US IF UR DEVICE IS BORKED, IT'S YOUR OWN FAULT AND WE WARNED YOU"
+    echo "DO YOU UNDERSTAND? TYPE 'Yes, do as I say' TO CONTINUE"
     read -r answer
-    if [ "$answer" = 'Yes, pwn my idevice' ]; then
+    if [ "$answer" = 'Yes, do as I say' ]; then
         echo "Are you REALLY sure? WE WARNED YOU!"
-        echo "Type 'Yes, do as I say' to continue"
+        echo "Type 'Yes, I am sure' to continue"
         read -r answer
-        if [ "$answer" = 'Yes, do as I say' ]; then
+        if [ "$answer" = 'Yes, I am sure' ]; then
             echo "[*] Enabling tweaks"
             tweaks=1
             touch .disclaimeragree
@@ -316,13 +318,13 @@ else
     fi
     echo "Hello, $(_info normal ProductType) on $version!"
 
-    echo "[*] Switching idevice into recovery mode..."
+    echo "[*] Switching device into recovery mode..."
     "$dir"/ideviceenterrecovery $(_info normal UniqueDeviceID)
     _wait recovery
 fi
 
 # Grab more info
-echo "[*] Getting idevice info..."
+echo "[*] Getting device info..."
 cpid=$(_info recovery CPID)
 model=$(_info recovery MODEL)
 deviceid=$(_info recovery PRODUCT)
@@ -482,7 +484,7 @@ if [ ! -f blobs/"$deviceid"-"$version".shsh2 ]; then
     mkdir work
 
     sleep 2
-    echo "[*] Done! Rebooting your idevice"
+    echo "[*] Done! Rebooting your device"
     "$dir"/sshpass -p 'alpine' ssh -o StrictHostKeyChecking=no -p2222 root@localhost "/sbin/reboot"
     sleep 1
     _kill_if_running iproxy
@@ -491,13 +493,13 @@ if [ ! -f blobs/"$deviceid"-"$version".shsh2 ]; then
         _wait normal
         sleep 5
 
-        echo "[*] Switching idevice into recovery mode..."
+        echo "[*] Switching device into recovery mode..."
         "$dir"/ideviceenterrecovery $(_info normal UniqueDeviceID)
     elif [ ! "$1" = '--tweaks' ]; then
         _wait normal
         sleep 5
 
-        echo "[*] Switching idevice into recovery mode..."
+        echo "[*] Switching device into recovery mode..."
         "$dir"/ideviceenterrecovery $(_info normal UniqueDeviceID)
     fi
     _wait recovery
@@ -566,7 +568,7 @@ fi
 sleep 2
 _pwn
 _reset
-echo "[*] Booting idevice"
+echo "[*] Booting device"
 if [[ "$cpid" == *"0x801"* ]]; then
     sleep 1
     "$dir"/irecovery -f boot-"$deviceid"/ibot.img4
@@ -598,9 +600,10 @@ cd ..
 rm -rf work rdwork
 echo ""
 echo "Done!"
-echo "The idevice should now verboose into iOS"
-echo "If this is your first time jailbreaking, open Tips app and press Install"
+echo "The device should now boot to iOS"
+echo "If this is your first time jailbreaking, open Tips app and then press Install"
 echo "Otherwise, open Tips app and press Do All in the Tools section"
-echo "This version of palera1n is for the deepsleep bug thanks to @pwnd2e"
+echo "If you have any issues, please join the Discord server and ask for help: https://dsc.gg/palera1n"
 echo "Enjoy!"
+
 } | tee logs/"$(date +%T)"-"$(date +%F)"-"$(uname)"-"$(uname -r)".log
