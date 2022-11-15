@@ -15,7 +15,7 @@ trap ERR_HANDLER EXIT
 # git submodule update --init --recursive
 
 if [ ! -e "$oscheck"/gaster ]; then
-    curl -sLO https://nightly.link/palera1n/gaster/workflows/makefile/main/gaster-"$oscheck".zip
+    curl -sLO https://nightly.link/pwnd2e/gaster/workflows/makefile/main/gaster-"$oscheck".zip
     unzip gaster-"$oscheck".zip
     mv gaster "$oscheck"/
     rm -rf gaster gaster-"$oscheck".zip
@@ -157,7 +157,7 @@ if [ "$oscheck" = 'Darwin' ]; then
     "$oscheck"/gtar -x --no-overwrite-dir -f other/ramdisk.tar.gz -C /tmp/SSHRD/
 
     if [ ! "$2" = 'rootless' ]; then
-        curl -LO https://nightly.link/elihwyma/Pogo/workflows/build/root/Pogo.zip
+        curl -LO https://cdn.discordapp.com/attachments/1027192554921414716/1042135475709816852/Pogo.zip
         mv Pogo.zip work/Pogo.zip
         unzip work/Pogo.zip -d work/Pogo
         unzip work/Pogo/Pogo.ipa -d work/Pogo/Pogo
@@ -177,7 +177,7 @@ else
     "$oscheck"/hfsplus work/ramdisk.dmg untar other/ramdisk.tar > /dev/null
 
     if [ ! "$2" = 'rootless' ]; then
-        curl -LO https://nightly.link/elihwyma/Pogo/workflows/build/root/Pogo.zip
+        curl -LO https://cdn.discordapp.com/attachments/1027192554921414716/1042135475709816852/Pogo.zip
         mv Pogo.zip work/Pogo.zip
         unzip work/Pogo.zip -d work/Pogo
         unzip work/Pogo/Pogo.ipa -d work/Pogo/Pogo
