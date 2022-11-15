@@ -92,7 +92,7 @@ if [ "$1" = 'boot' ]; then
     sleep 1
     "$oscheck"/irecovery -c bootx
 
-    echo "[*] idevice should boot soon please waite"
+    echo "[*] idevice should boot soon please wait"
     exit
 fi
 
