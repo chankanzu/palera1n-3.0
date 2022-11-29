@@ -1,3 +1,11 @@
+#
+![shitra1n](https://user-images.githubusercontent.com/104146035/204648207-419ac1fc-09cd-4394-99c2-d6c3f1c536c5.png)
+
+
+
+
+
+
 # This is a work in progress. by [pwnd2e@Twitter](https://twitter.com/pwnd2e) for this modified version of palera1n 
 Read this throughly, feel free to ask questions, know the risks. 
 
