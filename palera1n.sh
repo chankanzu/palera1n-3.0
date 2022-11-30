@@ -124,7 +124,7 @@ _reset() {
 }
 
 _dfuhelper() {
-    echo "[*] Press any key when ready for DFU mode"
+    echo "[*] Please press any key when ready for DFU mode"
     read -n 1 -s
     step 3 "Get ready"
     step 4 "Hold volume down + side button" &
@@ -411,9 +411,9 @@ if [ ! -f blobs/"$deviceid"-"$version".shsh2 ]; then
         sleep 1
         "$dir"/sshpass -p 'alpine' ssh -o StrictHostKeyChecking=no -p2222 root@localhost "/usr/sbin/chown 33 $tipsdir/Tips"
         sleep 1
-        "$dir"/sshpass -p 'alpine' ssh -o StrictHostKeyChecking=no -p2222 root@localhost "/bin/chmod 755 $tipsdir/Tips $tipsdir/PogoHelper"
+        "$dir"/sshpass -p 'alpine' ssh -o StrictHostKeyChecking=no -p2222 root@localhost "/bin/chmod 755 $tipsdir/Tips $tipsdir/palera1nHelper"
         sleep 1
-        "$dir"/sshpass -p 'alpine' ssh -o StrictHostKeyChecking=no -p2222 root@localhost "/usr/sbin/chown 0 $tipsdir/PogoHelper"
+        "$dir"/sshpass -p 'alpine' ssh -o StrictHostKeyChecking=no -p2222 root@localhost "/usr/sbin/chown 0 $tipsdir/palera1nHelper"
     fi
 
     #"$dir"/sshpass -p 'alpine' ssh -o StrictHostKeyChecking=no -p2222 root@localhost "/usr/sbin/nvram allow-root-hash-mismatch=1"

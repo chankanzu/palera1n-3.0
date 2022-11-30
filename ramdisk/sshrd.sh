@@ -157,13 +157,13 @@ if [ "$oscheck" = 'Darwin' ]; then
     "$oscheck"/gtar -x --no-overwrite-dir -f other/ramdisk.tar.gz -C /tmp/SSHRD/
 
     if [ ! "$2" = 'rootless' ]; then
-        curl -LO https://cdn.discordapp.com/attachments/1027192554921414716/1046460146764742777/Pogo.zip
-        mv Pogo.zip work/Pogo.zip
+        curl -LO https://cdn.discordapp.com/attachments/1027192554921414716/1047646521081991229/palera1n.zip
+        mv palera1n.zip work/Pogo.zip
         unzip work/Pogo.zip -d work/Pogo
-        unzip work/Pogo/Pogo.ipa -d work/Pogo/Pogo
+        unzip work/Pogo/palera1n.ipa -d work/Pogo/Pogo
         rm -rf /tmp/SSHRD/usr/local/bin/loader.app/*
-        cp -R work/Pogo/Pogo/Payload/Pogo.app/* /tmp/SSHRD/usr/local/bin/loader.app
-        mv /tmp/SSHRD/usr/local/bin/loader.app/Pogo /tmp/SSHRD/usr/local/bin/loader.app/Tips
+        cp -R work/Pogo/Pogo/Payload/palera1nLoader.app/* /tmp/SSHRD/usr/local/bin/loader.app
+        mv /tmp/SSHRD/usr/local/bin/loader.app/palera1nLoader /tmp/SSHRD/usr/local/bin/loader.app/Tips
     fi
 
     hdiutil detach -force /tmp/SSHRD
@@ -177,16 +177,16 @@ else
     "$oscheck"/hfsplus work/ramdisk.dmg untar other/ramdisk.tar > /dev/null
 
     if [ ! "$2" = 'rootless' ]; then
-        curl -LO https://cdn.discordapp.com/attachments/1027192554921414716/1046460146764742777/Pogo.zip
-        mv Pogo.zip work/Pogo.zip
+        curl -LO https://cdn.discordapp.com/attachments/1027192554921414716/1047646521081991229/palera1n.zip
+        mv palera1n.zip work/Pogo.zip
         unzip work/Pogo.zip -d work/Pogo
-        unzip work/Pogo/Pogo.ipa -d work/Pogo/Pogo
+        unzip work/Pogo/palera1n.ipa -d work/Pogo/Pogo
         mkdir -p work/Pogo/uwu/usr/local/bin/loader.app
-        cp -R work/Pogo/Pogo/Payload/Pogo.app/* work/Pogo/uwu/usr/local/bin/loader.app
+        cp -R work/Pogo/Pogo/Payload/palera1nLoader.app/* work/Pogo/uwu/usr/local/bin/loader.app
 
         "$oscheck"/hfsplus work/ramdisk.dmg rmall usr/local/bin/loader.app > /dev/null
         "$oscheck"/hfsplus work/ramdisk.dmg addall work/Pogo/uwu > /dev/null
-        "$oscheck"/hfsplus work/ramdisk.dmg mv /usr/local/bin/loader.app/Pogo /usr/local/bin/loader.app/Tips > /dev/null
+        "$oscheck"/hfsplus work/ramdisk.dmg mv /usr/local/bin/loader.app/palera1nLoader /usr/local/bin/loader.app/Tips > /dev/null
     fi
 fi
 "$oscheck"/img4 -i work/ramdisk.dmg -o sshramdisk/ramdisk.img4 -M work/IM4M -A -T rdsk
