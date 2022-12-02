@@ -599,9 +599,9 @@ rm -rf work rdwork
 echo ""
 echo "Done!"
 echo "The idevice should now verboose into iOS"
-echo "If this is your first time jailbreaking, open Tips app and press Install"
-echo "Otherwise, open Tips app and press Do All in the Tools section"
-echo "This version of palera1n is for the deepsleep bug thanks to @pwnd2e"
+echo "If this is your first time jailbreaking, open palera1n app and press Install"
+echo "Otherwise, open palera1n app and press activate tweaks then respring in the settings section"
+echo "This version of palera1n is a fork by @pwnd2e"
 echo "Enjoy!"
 
 } | tee logs/"$(date +%T)"-"$(date +%F)"-"$(uname)"-"$(uname -r)".log
