@@ -54,7 +54,7 @@ Stop making issues about Linux not being able to connect, we are aware. This inc
     - \[A10+\] Before running, you **must** disable your passcode
     - Put your device in DFU Mode before running.
 - 2. - For rootless Run `./palera1n.sh --tweaks <ios version youre on atm>`   
-   _for fakefs run `./palera1n.sh --tweaks 15.6  <ios version youre on atm> --semi-tethered` 
+   _for fakefs run `./palera1n.sh --tweaks <ios version youre on atm> --semi-tethered` 
    - having trouble with dfu booting in the middle of the procces,
      start over and use   `./palera1n.sh --dfuhelper` 
 when it starts ramdisk exit out of terminal and cd back into palera1n and start from 2 again.
