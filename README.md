@@ -61,7 +61,7 @@ Stop making issues about Linux not being able to connect, we are aware. This inc
 when it starts ramdisk exit out of terminal and cd back into palera1n and start from 2 again.
     - You will be prompt do you unerstand type  `Yes, pwn my idevice`  
     - then it will ask you again type `Yes, do as I say`
-- 3. Follow the steps
+- 3. Let it ra1n
 
 
 
