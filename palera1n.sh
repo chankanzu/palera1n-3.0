@@ -11,7 +11,7 @@ echo "[*] Command ran:`if [ $EUID = 0 ]; then echo " sudo"; fi` ./palera1n.sh $@
 # Variables
 # =========
 ipsw="" # IF YOU WERE TOLD TO PUT A CUSTOM IPSW URL, PUT IT HERE. YOU CAN FIND THEM ON https://appledb.dev
-version="3.1"
+version="3.0"
 os=$(uname)
 dir="$(pwd)/binaries/$os"
 commit=$(git rev-parse --short HEAD)
@@ -86,7 +86,7 @@ parse_opt() {
             verbose=1
             ;;
         --dfu)
-            echo "[!] DFU mode devices are now automatically detected and --dfu is deprecated"
+            echo "[!] DFU mode idevices are now automatically detected and --dfu is deprecated"
             ;;
         --restorerootfs)
             restorerootfs=1
@@ -421,7 +421,7 @@ if [ "$tweaks" = 1 ] && [ ! -e ".tweaksinstalled" ] && [ ! -e ".disclaimeragree"
 fi
 
 # Get device's iOS version from ideviceinfo if in normal mode
-echo "[*] Waiting for devices"
+echo "[*] Waiting for idevices"
 while [ "$(get_device_mode)" = "none" ]; do
     sleep 1;
 done
