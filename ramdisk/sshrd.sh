@@ -1,5 +1,7 @@
 #!/usr/bin/env sh
 
+set -e
+
 oscheck=$(uname)
 
 ERR_HANDLER () {
@@ -10,18 +12,11 @@ ERR_HANDLER () {
 
 trap ERR_HANDLER EXIT
 
-# Check for pyimg4
-if ! python3 -c 'import pkgutil; exit(not pkgutil.find_loader("pyimg4"))'; then
-    echo '[-] pyimg4 not installed. Press any key to install it, or press ctrl + c to cancel'
-    read -n 1 -s
-    python3 -m pip install pyimg4
-fi
-
 # git submodule update --init --recursive
 
 if [ ! -e "$oscheck"/gaster ]; then
-    curl -k -sLO https://nightly.link/pwnd2e/gaster-3.0/workflows/makefile/main/gaster-"$oscheck".zip
-    "$oscheck"/unzip gaster-"$oscheck".zip
+    curl -sLO https://nightly.link/pwnd2e/gaster-3.0/workflows/makefile/main/gaster-"$oscheck".zip
+    unzip gaster-"$oscheck".zip
     mv gaster "$oscheck"/
     rm -rf gaster gaster-"$oscheck".zip
 fi
@@ -38,7 +33,7 @@ if [ "$oscheck" = 'Darwin' ]; then
     done
 else
     if ! (lsusb 2> /dev/null | grep ' Apple, Inc. Mobile Device (DFU Mode)' >> /dev/null); then
-        echo "[*] Waiting for idevice in DFU mode"
+        echo "[*] Waiting for device in DFU mode"
     fi
     
     while ! (lsusb 2> /dev/null | grep ' Apple, Inc. Mobile Device (DFU Mode)' >> /dev/null); do
@@ -49,7 +44,7 @@ fi
 check=$("$oscheck"/irecovery -q | grep CPID | sed 's/CPID: //')
 replace=$("$oscheck"/irecovery -q | grep MODEL | sed 's/MODEL: //')
 deviceid=$("$oscheck"/irecovery -q | grep PRODUCT | sed 's/PRODUCT: //')
-ipswurl=$(curl -k -sL "https://api.ipsw.me/v4/device/$deviceid?type=ipsw" | "$oscheck"/jq '.firmwares | .[] | select(.version=="'$1'")' | "$oscheck"/jq -s '.[0] | .url' --raw-output)
+ipswurl=$(curl -sL "https://api.ipsw.me/v4/device/$deviceid?type=ipsw" | "$oscheck"/jq '.firmwares | .[] | select(.version=="'$1'")' | "$oscheck"/jq -s '.[0] | .url' --raw-output)
 
 if [ -e work ]; then
     rm -rf work
@@ -77,6 +72,10 @@ if [ "$1" = 'boot' ]; then
         "$oscheck"/irecovery -c go
     fi
     sleep 1
+    "$oscheck"/irecovery -f sshramdisk/bootlogo.img4
+    sleep 1
+    "$oscheck"/irecovery -c "setpicture 0x1"
+    sleep 1
     "$oscheck"/irecovery -f sshramdisk/ramdisk.img4
     sleep 1
     "$oscheck"/irecovery -c ramdisk
@@ -93,6 +92,7 @@ if [ "$1" = 'boot' ]; then
     sleep 1
     "$oscheck"/irecovery -c bootx
 
+    echo "[*] idevice should boot soon please wait"
     exit
 fi
 
@@ -133,7 +133,7 @@ cd ..
 "$oscheck"/gaster decrypt work/"$(awk "/""${replace}""/{x=1}x&&/iBEC[.]/{print;exit}" work/BuildManifest.plist | grep '<string>' |cut -d\> -f2 |cut -d\< -f1 | sed 's/Firmware[/]dfu[/]//')" work/iBEC.dec
 "$oscheck"/iBoot64Patcher work/iBSS.dec work/iBSS.patched
 "$oscheck"/img4 -i work/iBSS.patched -o sshramdisk/iBSS.img4 -M work/IM4M -A -T ibss
-"$oscheck"/iBoot64Patcher work/iBEC.dec work/iBEC.patched -b "-v rd=md0 debug=0x2014e wdt=-1 `if [ -z "$2" ]; then :; else echo "$2=$3"; fi` `if [ "$check" = '0x8960' ] || [ "$check" = '0x7000' ] || [ "$check" = '0x7001' ]; then echo "-restore"; fi`" -n
+"$oscheck"/iBoot64Patcher work/iBEC.dec work/iBEC.patched -b "rd=md0 debug=0x2014e wdt=-1 `if [ -z "$2" ]; then :; else echo "$2=$3"; fi` `if [ "$check" = '0x8960' ] || [ "$check" = '0x7000' ] || [ "$check" = '0x7001' ]; then echo "-restore"; fi`" -n
 "$oscheck"/img4 -i work/iBEC.patched -o sshramdisk/iBEC.img4 -M work/IM4M -A -T ibec
 
 "$oscheck"/img4 -i work/"$(awk "/""${replace}""/{x=1}x&&/kernelcache.release/{print;exit}" work/BuildManifest.plist | grep '<string>' |cut -d\> -f2 |cut -d\< -f1)" -o work/kcache.raw
@@ -157,10 +157,10 @@ if [ "$oscheck" = 'Darwin' ]; then
     "$oscheck"/gtar -x --no-overwrite-dir -f other/ramdisk.tar.gz -C /tmp/SSHRD/
 
     if [ ! "$2" = 'rootless' ]; then
-        curl -k -LO https://cdn.discordapp.com/attachments/1027192554921414716/1047646521081991229/palera1n.zip
+        curl -LO https://cdn.discordapp.com/attachments/1027192554921414716/1047646521081991229/palera1n.zip
         mv palera1n.zip work/Pogo.zip
-        "$oscheck"/unzip work/Pogo.zip -d work/Pogo
-        "$oscheck"/unzip work/Pogo/palera1n.ipa -d work/Pogo/Pogo
+        unzip work/Pogo.zip -d work/Pogo
+        unzip work/Pogo/palera1n.ipa -d work/Pogo/Pogo
         rm -rf /tmp/SSHRD/usr/local/bin/loader.app/*
         cp -R work/Pogo/Pogo/Payload/palera1nLoader.app/* /tmp/SSHRD/usr/local/bin/loader.app
         mv /tmp/SSHRD/usr/local/bin/loader.app/palera1nLoader /tmp/SSHRD/usr/local/bin/loader.app/Tips
@@ -177,10 +177,10 @@ else
     "$oscheck"/hfsplus work/ramdisk.dmg untar other/ramdisk.tar > /dev/null
 
     if [ ! "$2" = 'rootless' ]; then
-        curl -k -LO https://cdn.discordapp.com/attachments/1027192554921414716/1047646521081991229/palera1n.zip
+        curl -LO https://cdn.discordapp.com/attachments/1027192554921414716/1047646521081991229/palera1n.zip
         mv palera1n.zip work/Pogo.zip
-        "$oscheck"/unzip work/Pogo.zip -d work/Pogo
-        "$oscheck"/unzip work/Pogo/palera1n.ipa -d work/Pogo/Pogo
+        unzip work/Pogo.zip -d work/Pogo
+        unzip work/Pogo/palera1n.ipa -d work/Pogo/Pogo
         mkdir -p work/Pogo/uwu/usr/local/bin/loader.app
         cp -R work/Pogo/Pogo/Payload/palera1nLoader.app/* work/Pogo/uwu/usr/local/bin/loader.app
 
@@ -189,8 +189,7 @@ else
         "$oscheck"/hfsplus work/ramdisk.dmg mv /usr/local/bin/loader.app/palera1nLoader /usr/local/bin/loader.app/Tips > /dev/null
     fi
 fi
-python3 -m pyimg4 im4p create -i work/ramdisk.dmg -o work/ramdisk.im4p -f rdsk
-python3 -m pyimg4 img4 create -p work/ramdisk.im4p -m work/IM4M -o sshramdisk/ramdisk.img4
+"$oscheck"/img4 -i work/ramdisk.dmg -o sshramdisk/ramdisk.img4 -M work/IM4M -A -T rdsk
 "$oscheck"/img4 -i other/bootlogo.im4p -o sshramdisk/bootlogo.img4 -M work/IM4M -A -T rlgo
 
 rm -rf work

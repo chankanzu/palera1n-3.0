@@ -53,9 +53,12 @@ Stop making issues about Linux not being able to connect, we are aware. This inc
 - 1. Clone this repo with `git clone --recursive https://github.com/pwnd2e/palera1n-3.0 && cd palera1n-3.0`
     - \[A10+\] Before running, you **must** disable your passcode
     - Put your device in DFU Mode before running.
-- 2.  For rootless Run `./palera1n.sh --tweaks <ios version youre on atm>`   
-   - for fakefs run `./palera1n.sh --tweaks <ios version youre on atm> --semi-tethered` 
+- 2. - For rootless Run `./palera1n.sh --tweaks <ios version youre on atm>`   
+   _for fakefs run `./palera1n.sh --tweaks <ios version youre on atm> --semi-tethered` 
    - With semi-tether after first install and re-jailbreaking just hit activate tweaks then respring
+   - if your having trouble with dfu booting in the middle of the procces,
+     start over and use   `./palera1n.sh --dfuhelper` 
+when it starts ramdisk exit out of terminal and cd back into palera1n and start from 2 again.
     - You will be prompt do you unerstand type  `Yes, pwn my idevice`  
     - then it will ask you again type `Yes, do as I say`
 - 3. Let it ra1n
